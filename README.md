@@ -342,134 +342,163 @@ sequenceDiagram
 16.	🖥️ Screen	Screenshot capture, screen recording, quality/scale control	SCREENSHOT
 
 ## 🛡️ Security Features
+```
 Feature	                   Details
-AES-256 Encryption       	CBC and GCM modes for file encryption
-Secure Delete	3-pass     overwrite (zeros → random → ones) before deletion
-Token Authentication	SHA-256 based device verification
-Encrypted Transport	All data encrypted in transit via TCP
-PBKDF2 Key Derivation	100,000 iterations for password-based keys
-SHA-256 Hashing	File integrity verification
+AES-256 Encryption         	CBC and GCM modes for file encryption
+Secure Delete	3-pass        overwrite (zeros → random → ones) before deletion
+Token Authentication	      SHA-256 based device verification
+Encrypted Transport	        All data encrypted in transit via TCP
+PBKDF2 Key Derivation	      100,000 iterations for password-based keys
+SHA-256 Hashing	            File integrity verification
 Magic Bytes Header	"ATHEX" header for encrypted file identification
-🔨 APK Builder
-Feature	Description
-Custom Builds	Inject server IP, port, app name at build time
-Feature Selection	Choose which modules to include
-Auto Signing	Automatic keystore generation and APK signing
-Template System	Easy customization of base APK
-One-Click Build	Generate APK directly from dashboard
-Download Ready	Instant download after build
-
+```
+## 🔨 APK Builder
+```Feature	             Description
+Custom Builds	           Inject server IP, port, app name at build time
+Feature Selection	       Choose which modules to include
+Auto Signing	           Automatic keystore generation and APK signing
+Template System	         Easy customization of base APK
+One-Click Build      	   Generate APK directly from dashboard
+Download Ready	         Instant download after build
+```
 ## Installation
+```
 git clone https://github.com/Athexblackhat/ATHEX-DLP.git
 cd ATHEX-DLP
-
+```
 ### Install dependencies
+```
 cd server
 pip install -r requirements.txt
-
-### 5. Start the server
+```
+### Start the server
+```
 python app.py
-
-## 6. Open browser to http://localhost:5000
+```
+## Open browser to http://localhost:5000
 
 ### Open Git Bash in the project directory
+```
 cd tools
 bash setup.sh
-
+```
 ### Start server
+```
 cd ../server
 python app.py
-
+```
 
 ## Termux Installation
 ### Update system packages
+```
 sudo apt update && sudo apt upgrade -y
-
+```
 ### Install prerequisites
+```
 sudo apt install -y python3 python3-pip python3-venv git openjdk-17-jdk
-
+```
 ### Clone repository
+```
 git clone https://github.com/Athexblackhat/ATHEX-DLP.git
 cd ATHEX-DLP
-
+```
 ### Create virtual environment (recommended)
+```
 python3 -m venv venv
 source venv/bin/activate
-
+```
 ### Install dependencies
+```
 cd server
 pip install -r requirements.txt
-
+```
 ### Start server
+```
 python3 app.py --host 0.0.0.0 --port 5000
 CentOS/RHEL/Fedora
-
+```
 ### Install prerequisites
+```
 sudo dnf install -y python3 python3-pip git java-17-openjdk
-
+```
 ### Follow same steps as Ubuntu from step 3
 Arch Linux
-bash
 ### Install prerequisites
+```
 sudo pacman -S python python-pip git jdk17-openjdk
-
+```
 ### Follow same steps as Ubuntu from step 3
 Firewall Configuration
-bash
+
 ### UFW (Ubuntu/Debian)
+```
 sudo ufw allow 22533/tcp
 sudo ufw allow 5000/tcp
-
+```
 ### Firewalld (CentOS/Fedora)
+```
 sudo firewall-cmd --permanent --add-port=22533/tcp
 sudo firewall-cmd --permanent --add-port=5000/tcp
 sudo firewall-cmd --reload
-
+```
 ### iptables (Generic)
+```
 sudo iptables -A INPUT -p tcp --dport 22533 -j ACCEPT
 sudo iptables -A INPUT -p tcp --dport 5000 -j ACCEPT
 sudo iptables-save > /etc/iptables/rules.v4
+```
 macOS Installation
-bash
+
 ### Install Homebrew (if not already installed)
+```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
+```
 ### Install prerequisites
+```
 brew install python@3.11 git openjdk@17
-
+```
 ### Clone repository
+```
 git clone https://github.com/Athexblackhat/ATHEX-DLP.git
 cd ATHEX-DLP
-
+```
 ### Create virtual environment
+```
 python3 -m venv venv
 source venv/bin/activate
-
+```
 ### Install dependencies
+```
 cd server
 pip install -r requirements.txt
-
+```
 ### Start server
+```
 python3 app.py
-
+```
 ## Install Termux from F-Droid (NOT Google Play Store)
 ### Update packages
+```
 pkg update && pkg upgrade -y
-
+```
 ### Install prerequisites
+```
 pkg install python python-pip git openjdk-17 -y
-
+```
 ### Clone repository
+```
 git clone https://github.com/Athexblackhat/ATHEX-DLP.git
 cd ATHEX-DLP
-
+```
 ### Install dependencies
+```
 cd server
 pip install -r requirements.txt
-
+```
 ### Start server
+```
 python app.py --host 0.0.0.0 --port 5000
-
+```
 ### Access dashboard from phone browser
 *** http://localhost:5000***
 
