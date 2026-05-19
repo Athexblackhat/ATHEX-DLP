@@ -99,7 +99,7 @@
 
 ---
 
-# 🏗️ SYSTEM ARCHITECTURE
+##🏗️ SYSTEM ARCHITECTURE
 
 ## High-Level Architecture
 
@@ -136,8 +136,10 @@ graph TB
     
     H -->|"1. Phone initiates TCP connection"| C
     C -->|"2. Server sends commands"| H
-    H -->|"3. Phone sends collected data"| C
-Component Architecture
+    H -->|"3. Phone sends collected data"| 
+```    
+## Component Architecture
+```mermaid
 graph LR
     subgraph "🖥️ SERVER COMPONENTS"
         direction TB
