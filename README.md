@@ -136,7 +136,7 @@ graph TB
     
     H -->|"1. Phone initiates TCP connection"| C
     C -->|"2. Server sends commands"| H
-    H -->|"3. Phone sends collected data"|
+    H -->|"3. Phone sends collected data"| D
     
 ```    
 ## Component Architecture
@@ -157,21 +157,53 @@ graph LR
     end
     
     subgraph "📦 MODULES (16)"
-        M1["📇 Contacts"] & M2["💬 SMS"] & M3["📞 Calls"] & M4["📁 Files"]
-        M5["📍 Location"] & M6["🔔 Notifications"] & M7["📋 Clipboard"] & M8["📱 Apps"]
-        M9["📶 WiFi"] & M10["📸 Camera"] & M11["🎤 Microphone"] & M12["⌨️ Keylogger"]
-        M13["🌐 Browser"] & M14["💬 Social"] & M15["🔐 Crypto"] & M16["🖥️ Screen"]
+        direction LR
+        M1["📇 Contacts"]
+        M2["💬 SMS"]
+        M3["📞 Calls"]
+        M4["📁 Files"]
+        M5["📍 Location"]
+        M6["🔔 Notifications"]
+        M7["📋 Clipboard"]
+        M8["📱 Apps"]
+        M9["📶 WiFi"]
+        M10["📸 Camera"]
+        M11["🎤 Microphone"]
+        M12["⌨️ Keylogger"]
+        M13["🌐 Browser"]
+        M14["💬 Social"]
+        M15["🔐 Crypto"]
+        M16["🖥️ Screen"]
     end
     
     subgraph "🌐 DASHBOARD"
-        HTML["📄 index.html"] & CSS["🎨 dashboard.css"]
-        JS["⚡ dashboard.js"] & TERM["💻 terminal.js"]
+        direction LR
+        HTML["📄 index.html"]
+        CSS["🎨 dashboard.css"]
+        JS["⚡ dashboard.js"]
+        TERM["💻 terminal.js"]
     end
     
-    TCP --> M1 & M2 & M3 & M4 & M5 & M6 & M7 & M8
-    TCP --> M9 & M10 & M11 & M12 & M13 & M14 & M15 & M16
+    TCP --> M1
+    TCP --> M2
+    TCP --> M3
+    TCP --> M4
+    TCP --> M5
+    TCP --> M6
+    TCP --> M7
+    TCP --> M8
+    TCP --> M9
+    TCP --> M10
+    TCP --> M11
+    TCP --> M12
+    TCP --> M13
+    TCP --> M14
+    TCP --> M15
+    TCP --> M16
     SOCK --> HTML
-    HTML --> CSS & JS &
+    HTML --> CSS
+    HTML --> JS
+    HTML --> TERM
     
 ```    
 
