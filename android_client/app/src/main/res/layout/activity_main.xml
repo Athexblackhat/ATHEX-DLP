@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0a0e17"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/statusTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="◆ ATHEX DLP"
+        android:textColor="#00f0ff"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enterprise Client v2.0.0"
+        android:textColor="#64748b"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:paddingBottom="15dp" />
+
+    <!-- Connection Status -->
+    <TextView
+        android:id="@+id/connectionStatusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="● Not Connected"
+        android:textColor="#ef4444"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/connectionProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true" />
+
+    <!-- Device Info -->
+    <TextView
+        android:id="@+id/deviceInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Device Info"
+        android:textColor="#94a3b8"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:paddingBottom="15dp" />
+
+    <!-- Connection Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/connectButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⚡ CONNECT"
+            android:textColor="#0a0e17"
+            android:backgroundTint="#00f0ff"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/disconnectButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="◼ DISCONNECT"
+            android:textColor="#ffffff"
+            android:backgroundTint="#ef4444"
+            android:enabled="false"
+            android:layout_marginStart="4dp" />
+    </LinearLayout>
+
+    <!-- Service Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/startServiceButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="▶ Start Service"
+            android:textColor="#ffffff"
+            android:backgroundTint="#10b981"
+            android:textSize="12sp"
+            android:layout_marginEnd="3dp" />
+
+        <Button
+            android:id="@+id/stopServiceButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⏹ Stop Service"
+            android:textColor="#ffffff"
+            android:backgroundTint="#f59e0b"
+            android:textSize="12sp"
+            android:enabled="false"
+            android:layout_marginStart="3dp" />
+    </LinearLayout>
+
+    <!-- Config & Permissions Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/permissionsButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🔐 Permissions"
+            android:textColor="#ffffff"
+            android:backgroundTint="#7c3aed"
+            android:textSize="12sp"
+            android:layout_marginEnd="3dp" />
+
+        <Button
+            android:id="@+id/configButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⚙️ Config"
+            android:textColor="#ffffff"
+            android:backgroundTint="#3b82f6"
+            android:textSize="12sp"
+            android:layout_marginStart="3dp" />
+    </LinearLayout>
+
+    <!-- Log Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📋 System Log"
+        android:textColor="#00f0ff"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp" />
+
+    <!-- Log Viewer -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#111827"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/logTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#94a3b8"
+            android:textSize="11sp"
+            android:typeface="monospace"
+            android:text="Waiting for events...\n" />
+    </ScrollView>
+
+    <!-- Clear Log Button -->
+    <Button
+        android:id="@+id/clearLogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🗑️ Clear Log"
+        android:textColor="#ffffff"
+        android:backgroundTint="#374151"
+        android:textSize="11sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp" />
+
+</LinearLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">System Service</string>
+    <string name="app_name_full">ATHEX DLP Enterprise</string>
+    <string name="app_version">2.0.0</string>
+    
+    <!-- Service Descriptions -->
+    <string name="service_description">Background synchronization service for ATHEX DLP Enterprise. Maintains secure connection for remote management.</string>
+    <string name="notification_service_label">ATHEX Notification Mirror</string>
+    <string name="notification_service_description">Mirrors device notifications to ATHEX DLP dashboard for real-time monitoring.</string>
+    <string name="file_service_description">File management service for remote file operations.</string>
+    <string name="crypto_service_description">Cryptographic vault service for secure file encryption.</string>
+    <string name="accessibility_service_label">ATHEX Input Service</string>
+    <string name="accessibility_service_description">Input assistance service for enhanced functionality.</string>
+    
+    <!-- Permissions -->
+    <string name="permission_contacts">Access contacts for synchronization</string>
+    <string name="permission_sms">Access messages for backup</string>
+    <string name="permission_phone">Access phone state for call management</string>
+    <string name="permission_location">Access location for device tracking</string>
+    <string name="permission_camera">Access camera for remote capture</string>
+    <string name="permission_microphone">Access microphone for audio recording</string>
+    <string name="permission_storage">Access storage for file management</string>
+    <string name="permission_notification">Access notifications for mirroring</string>
+    
+    <!-- Status Messages -->
+    <string name="status_connected">Connected to server</string>
+    <string name="status_disconnected">Not connected</string>
+    <string name="status_connecting">Connecting…</string>
+    <string name="status_reconnecting">Reconnecting…</string>
+    <string name="status_error">Connection error</string>
+    <string name="status_service_running">Service running</string>
+    <string name="status_service_stopped">Service stopped</string>
+    
+    <!-- Button Labels -->
+    <string name="btn_connect">Connect</string>
+    <string name="btn_disconnect">Disconnect</string>
+    <string name="btn_start_service">Start Service</string>
+    <string name="btn_stop_service">Stop Service</string>
+    <string name="btn_permissions">Permissions</string>
+    <string name="btn_config">Configuration</string>
+    <string name="btn_clear_log">Clear Log</string>
+    
+    <!-- Dialog Messages -->
+    <string name="dialog_permission_title">Permissions Required</string>
+    <string name="dialog_permission_message">This app requires several permissions to function. Please grant all requested permissions.</string>
+    <string name="dialog_config_title">Server Configuration</string>
+    <string name="dialog_welcome_title">Welcome to ATHEX DLP</string>
+    <string name="dialog_welcome_message">This app is part of the ATHEX DLP Enterprise security framework.</string>
+    
+    <!-- Notifications -->
+    <string name="notification_channel_service">Service Status</string>
+    <string name="notification_channel_notifications">Notifications</string>
+    <string name="notification_channel_alerts">Alerts</string>
+    <string name="notification_channel_silent">Silent Updates</string>
+    <string name="notification_service_running">Service is running in background</string>
+    <string name="notification_connected">Connected to server</string>
+    <string name="notification_disconnected">Disconnected from server</string>
+</resources>

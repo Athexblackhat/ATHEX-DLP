@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Background -->
+    <color name="bg_primary">#0a0e17</color>
+    <color name="bg_secondary">#111827</color>
+    <color name="bg_card">#1a1f2e</color>
+    <color name="bg_card_hover">#1f2937</color>
+    
+    <!-- Accent Colors -->
+    <color name="accent_cyan">#00f0ff</color>
+    <color name="accent_purple">#7c3aed</color>
+    <color name="accent_green">#10b981</color>
+    <color name="accent_red">#ef4444</color>
+    <color name="accent_yellow">#f59e0b</color>
+    <color name="accent_pink">#ec4899</color>
+    <color name="accent_blue">#3b82f6</color>
+    <color name="accent_orange">#f97316</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#f1f5f9</color>
+    <color name="text_secondary">#94a3b8</color>
+    <color name="text_muted">#64748b</color>
+    <color name="text_disabled">#4b5563</color>
+    
+    <!-- Status Colors -->
+    <color name="status_online">#10b981</color>
+    <color name="status_offline">#ef4444</color>
+    <color name="status_warning">#f59e0b</color>
+    <color name="status_info">#3b82f6</color>
+    <color name="status_success">#10b981</color>
+    <color name="status_error">#ef4444</color>
+    
+    <!-- Button Colors -->
+    <color name="btn_primary">#00f0ff</color>
+    <color name="btn_primary_text">#0a0e17</color>
+    <color name="btn_danger">#ef4444</color>
+    <color name="btn_danger_text">#ffffff</color>
+    <color name="btn_success">#10b981</color>
+    <color name="btn_success_text">#ffffff</color>
+    <color name="btn_warning">#f59e0b</color>
+    <color name="btn_warning_text">#ffffff</color>
+    <color name="btn_secondary">#374151</color>
+    <color name="btn_secondary_text">#ffffff</color>
+    
+    <!-- Border Colors -->
+    <color name="border_subtle">#1e293b</color>
+    <color name="border_accent">#00f0ff33</color>
+    
+    <!-- Notification Colors -->
+    <color name="notification_bg">#1a1f2e</color>
+    <color name="notification_dot_online">#10b981</color>
+    <color name="notification_dot_offline">#ef4444</color>
+</resources>

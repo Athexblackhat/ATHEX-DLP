@@ -1,0 +1,23 @@
+# Core Framework
+Flask==3.0.0
+Flask-SocketIO==5.3.6
+Flask-Cors==4.0.0
+
+# Async & WebSocket
+python-socketio==5.11.1
+gevent==23.9.1
+gevent-websocket==0.10.1
+eventlet==0.33.3
+
+# HTTP & Requests
+requests==2.31.0
+Werkzeug==3.0.1
+
+# Security
+cryptography==41.0.7
+PyJWT==2.8.0
+
+# Utilities
+python-dotenv==1.0.0
+colorama==0.4.6
+rich==13.7.0

@@ -1,0 +1,7 @@
+*.pyc
+__pycache__/
+*.log
+.DS_Store
+output_apks/
+builds/
+*.keystore

